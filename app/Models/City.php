@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     use HasFactory;
+    public $timestamps = false; //set time to false
     protected $fillable = [
         'matp',
         'name_city',

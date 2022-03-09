@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Coupon extends Model
 {
     use HasFactory;
+    // public $timestamps = false;
     protected $fillable = [
         'coupon_name',
         'coupon_code',
@@ -16,8 +17,7 @@ class Coupon extends Model
         'coupon_min_value',
         'expired_on',  
         'coupon_status',  
-        'added_on',  
-        
+        'added_on',    
     ];
 
     protected $primaryKey = 'coupon_id';

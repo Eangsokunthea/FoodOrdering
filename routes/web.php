@@ -16,7 +16,9 @@ use App\Http\Middleware\CheckAuthMiddleware;
 
 //frontend
 Route::get('/', [App\Http\Controllers\frontEndController::class, 'index']);
+Route::get('/all-dish', [App\Http\Controllers\frontEndController::class, 'allDish'])->name('show_all_dish');
 Route::get('/category/dish/show/{category_id}', [App\Http\Controllers\frontEndController::class, 'dish_show'])->name('show_category_dish');
+Route::get('/TroVe-muasam', [App\Http\Controllers\frontEndController::class, 'trove'])->name('TroVeMua');
 
 //search
 Route::post('/search', [App\Http\Controllers\frontEndController::class, 'search'])->name('search_dish');
@@ -54,12 +56,39 @@ Route::post('/logout/customer', [App\Http\Controllers\customerController::class,
 Route::get('/shipping', [App\Http\Controllers\customerController::class, 'shipping'])->name('shipping');
 Route::post('/shipping/store', [App\Http\Controllers\customerController::class, 'storeShipping'])->name('store_shipping');
 
+//feeship customer
+Route::post('/select-deliver-home', [App\Http\Controllers\customerController::class, 'SelectDeliverHome'])->name('select_deliver_home');
+Route::post('/calculate-fee', [App\Http\Controllers\customerController::class, 'CalculateFee'])->name('calculate_fee');
+Route::get('/del-fee', [App\Http\Controllers\customerController::class, 'DelFee'])->name('del_fee');
+
+//contact
+Route::get('/con-tact', [App\Http\Controllers\contactController::class, 'contact'])->name('contact');
+
+//about
+Route::get('/a-bout', [App\Http\Controllers\aboutController::class, 'about'])->name('about');
 
 Auth::routes();
 
-
 //backend
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/all-customer', [App\Http\Controllers\HomeController::class, 'show_cus'])->name('show_customer');
+Route::get('/delete/{customer_id}', [App\Http\Controllers\HomeController::class, 'delete'])->name('delete_customer');
+
+//view filter date
+// Route::post('/view-filter-date', [App\Http\Controllers\HomeController::class, 'view_filter_date'])->name('filter_date');
+
+
+// Bieu do doanh thu
+// Route::post('/filter-by-date', [App\Http\Controllers\HomeController::class, 'filter_by_date'])->name('filterBydate');
+// Route::post('/dashboard-filter', [App\Http\Controllers\HomeController::class, 'dashboard_filter'])->name('dashboardFilter');
+
+// Route::get('/order-date', [App\Http\Controllers\HomeController::class, 'order_date'])->name('orderDate');
+// Route::post('/days-order', [App\Http\Controllers\HomeController::class, 'days_order'])->name('daysOrder');
+
+Route::prefix('user')->group(function(){
+    //user
+    Route::get('/manage', [App\Http\Controllers\userController::class, 'manage'])->name('manage_user');
+});
 
 Route::prefix('category')->group(function(){
     // category
@@ -71,6 +100,9 @@ Route::prefix('category')->group(function(){
     
     Route::get('/delete/{category_id}', [App\Http\Controllers\categoryController::class, 'delete'])->name('delete_category');
     Route::post('/update', [App\Http\Controllers\categoryController::class, 'update'])->name('update_category');
+
+    Route::get('/category-export-csv', [App\Http\Controllers\categoryController::class, 'Category_Export_csv'])->name('category_export_csv');
+    Route::post('/category-import-csv',[App\Http\Controllers\categoryController::class, 'Category_Import_csv'])->name('category_import_csv');
 });
 
 Route::prefix('delivery')->group(function(){
@@ -84,8 +116,12 @@ Route::prefix('delivery')->group(function(){
     Route::get('/boy/delete/{delivery_id}', [App\Http\Controllers\deliveryController::class, 'delete'])->name('delete_delivery');
     Route::post('/boy/update', [App\Http\Controllers\deliveryController::class, 'update'])->name('update_delivery');
 
-    // ----------------------
-    Route::get('/insert-delivery', [App\Http\Controllers\deliveryController::class, 'InsertDelivery'])->name('insert_delivery');
+    // ----------------------fee ship-------------------
+    Route::get('/manage-feeship', [App\Http\Controllers\deliveryController::class, 'ManageFeeShip'])->name('manage_feeship');
+    Route::post('/select-delivery', [App\Http\Controllers\deliveryController::class, 'SelectDelivery'])->name('select_delivery');
+    Route::post('/insert-delivery', [App\Http\Controllers\deliveryController::class, 'InsertDelivery'])->name('insert_delivery');
+    Route::post('/select-feeship', [App\Http\Controllers\deliveryController::class, 'SelectFeeship'])->name('select_feeship');
+    Route::post('/update-Feedelivery', [App\Http\Controllers\deliveryController::class, 'UpdateFeeDelivery'])->name('update_Feedelivery');
 
 });
 
@@ -111,6 +147,9 @@ Route::prefix('dish')->group(function(){
     
     Route::get('/delete/{dish_id}', [App\Http\Controllers\dishController::class, 'delete'])->name('delete_dish');
     Route::post('/update', [App\Http\Controllers\dishController::class, 'update'])->name('update_dish');
+
+    Route::get('/export-csv', [App\Http\Controllers\dishController::class, 'Export_csv'])->name('export_csv');
+    Route::post('/import-csv',[App\Http\Controllers\dishController::class, 'Import_csv'])->name('import_csv');
 });
 
 Route::prefix('order')->middleware([CheckAuthMiddleware::class])->group(function(){
@@ -121,5 +160,8 @@ Route::prefix('order')->middleware([CheckAuthMiddleware::class])->group(function
     Route::get('/download/invoice/{order_id}', [App\Http\Controllers\orderController::class, 'downloadInvoice'])->name('download_order_invoice');
         
     Route::get('/delete/{order_id}', [App\Http\Controllers\orderController::class, 'delete'])->name('delete_order');
+
+    Route::get('/order-export-csv', [App\Http\Controllers\orderController::class, 'Order_Export_csv'])->name('order_export_csv');
+    Route::post('/order-import-csv',[App\Http\Controllers\orderController::class, 'Order_Import_csv'])->name('order_import_csv');
 });
 

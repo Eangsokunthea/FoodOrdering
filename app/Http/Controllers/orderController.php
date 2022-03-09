@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\OrderExports;
+use App\Imports\OrderImports;
+use App\Models\Coupon;
 use App\Models\Customer;
+use App\Models\Dish;
+use App\Models\Feeship;
 use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Payment;
 use App\Models\Shipping;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 use PDF;
+use Excel;
 
 
 class orderController extends Controller
@@ -19,6 +26,7 @@ class orderController extends Controller
                     ->join('customers', 'orders.customer_id', '=', 'customers.customer_id')
                     ->join('payments', 'orders.order_id', '=', 'payments.order_id')
                     ->select('orders.*', 'customers.name', 'payments.payment_type', 'payments.payment_status')
+                    ->orderby('orders.order_id','desc')
                     ->get();
 
         return view('BackEnd.Order.manage', compact('orders'));
@@ -61,5 +69,15 @@ class orderController extends Controller
         $order->delete();
         return back()->with('message', 'Order Deleted Successfully');
     } 
+
+    public function Order_Export_csv(){
+        return Excel::download(new OrderExports , 'orders.xlsx');
+    }
+    
+    public function Order_Import_csv(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new OrderImports, $path);
+        return back();
+    }
 
 }

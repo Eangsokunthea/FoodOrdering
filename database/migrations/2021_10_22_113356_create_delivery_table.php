@@ -14,7 +14,7 @@ class CreateDeliveryTable extends Migration
     public function up()
     {
         Schema::create('delivery', function (Blueprint $table) {
-            $table->bigIncrements('delivery_id');
+            $table->bigIncrements('delivery_id')->unsigned()->autoIncrement();
             $table->string('delivery_name');
             $table->string('delivery_phone_number')->unique();
             $table->string('delivery_password');

@@ -14,10 +14,11 @@ class CreatePaymentsTable extends Migration
     public function up()
     {
         Schema::create('payments', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->integer('order_id');
+            $table->bigIncrements('id')->unsigned()->autoIncrement();
+            $table->unsignedBigInteger('order_id');
             $table->string('payment_type');
             $table->string('payment_status')->default('pending');
+            $table->foreign('order_id')->references('order_id')->on('orders')->onDelete('cascade');
             $table->timestamps();
         });
     }

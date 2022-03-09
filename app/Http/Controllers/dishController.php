@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ExcelExports;
+use App\Imports\ExcelImports;
 use App\Models\Category;
 use App\Models\Dish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Excel;
 
 class dishController extends Controller
 {
@@ -92,6 +95,15 @@ class dishController extends Controller
 
         $dish->save();  
         return redirect('/dish/manage')->with('message', 'Dish Updated');
+    }
+
+    public function Export_csv(){
+        return Excel::download(new ExcelExports , 'dish.xlsx');
+    }
+    public function Import_csv(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new ExcelImports, $path);
+        return back();
     }
 }
 

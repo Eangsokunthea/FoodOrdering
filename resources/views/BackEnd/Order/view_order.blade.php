@@ -43,7 +43,7 @@
                 </tr>
                 <tr>
                     <th>Order Total</th>
-                    <td>{{$order->order_total}}</td>
+                    <td>{{$order->order_total}}.00$</td>
                 </tr>
                 <tr>
                     <th>Order Status</th>
@@ -111,29 +111,81 @@
             <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
-                        <th>SL</th>
+                        <th>#</th>
                         <th>Id</th>
                         <th>Name</th>
-                        <th>Price</th>
                         <th>Quantity</th>
+                        <th>Full Price</th>
                         <th>Total Price</th>
+                     
                     </tr>
                 </thead>
                 <tbody>
                     @php($i = 1)
+                    @php($sum = 0)
                     @foreach($order_details as $orderD)
                     <tr>
                         <td>{{$i++}}</td>
                         <td>{{$orderD->dish_id}}</td>
                         <td>{{$orderD->dish_name}}</td>
-                        <td>{{$orderD->dish_price}}.00$</td>
                         <td>{{$orderD->dish_qty}}</td>
-                        <td>{{$orderD->dish_price * $orderD->dish_qty}}.00$</td>
+                        <td>{{$orderD->dish_price}}.00$</td>
+                        <td>{{$total = $orderD->dish_price * $orderD->dish_qty}}.00$</td>
+                       
                     </tr>
+                    @php($sum = $sum + $total)
                     @endforeach
+                   
                 </tbody>
                 
             </table>
+            <div class="row">
+                <div class="col-lg-4 col-sm-5">
+                </div>
+                <div class="col-lg-4 col-sm-5 ml-auto">
+                    <table class="table table-clear">
+                        <tbody>
+                            <tr>
+                                <td class="left">
+                                    <strong class="text-dark">Sub Total</strong>
+                                </td>
+                                <td class="right">{{$sum}}.00$</td>
+                            </tr>
+
+                            <tr>
+                                <td class="left">
+                                    <strong class="text-dark">Discount</strong>
+                                </td>
+                                <td class="right">
+                                    @if(Session::get('coupon'))
+                                        @foreach(Session::get('coupon') as $coup)
+                                            @if($coup['coupon_type']==1)
+                                                {{$coup['coupon_value']}}%
+                                            @elseif($coup['coupon_type']==0)
+                                                {{number_format($coup['coupon_value'],0,',','.')}}$
+                                            @endif
+                                        @endforeach
+                                    @endif
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="left">
+                                    <strong class="text-dark">FeeShip</strong>
+                                </td>
+                                <td class="right">{{Session::get('fee')}}.00$</td>
+                            </tr>
+                            <tr>
+                                <td class="left">
+                                    <strong class="text-dark">Total Remaining</strong> </td>
+                                <td class="right">
+                                    <strong class="text-dark">{{$order->order_total}}$</strong>
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
         <!-- /.card-body -->
     </div>

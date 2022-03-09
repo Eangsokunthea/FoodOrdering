@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Delivery extends Model
 {
     use HasFactory;
+    public $timestamps = false; //set time to false
     protected $fillable = [
         'delivery_name',
         'delivery_phone_number',

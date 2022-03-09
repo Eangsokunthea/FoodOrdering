@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CategoryExports;
+use App\Imports\CategoryImports;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Excel;
 
 class categoryController extends Controller
 {
@@ -20,7 +23,7 @@ class categoryController extends Controller
 
         return back()->with('message','Category Saved');
     }
-    public function  manage(){
+    public function manage(){
         $categories = Category::all();
         return view('BackEnd.category.manageCategory', compact('categories'));
     }
@@ -47,6 +50,16 @@ class categoryController extends Controller
         $category->order_number = $request->order_number;
         $category->save();
         return redirect('/category/manage')->with('message', 'Category Updated');
+    }
+
+    public function Category_Export_csv(){
+        return Excel::download(new CategoryExports , 'category.xlsx');
+    }
+    
+    public function Category_Import_csv(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new CategoryImports, $path);
+        return back();
     }
 }
 

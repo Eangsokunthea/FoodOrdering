@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Wards extends Model
 {
     use HasFactory;
-    //public $timestamps = false; //set time to false
+    public $timestamps = false; //set time to false
     protected $fillable = [
         'xaid',
         'name_xaphuong',

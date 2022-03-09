@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Coupon;
 use App\Models\Dish;
 use Illuminate\Http\Request;
@@ -31,9 +32,9 @@ class cartController extends Controller
     }
     public function show(){
         $CartDish = Cart::content();
-      
+        $city = City::orderby('matp','ASC')->get();
         $categories = Category::where('category_status', 1)->get();
-        return view('FrontEnd.cart.show_cart', compact('CartDish', 'categories'));
+        return view('FrontEnd.cart.show_cart', compact('CartDish', 'categories', 'city'));
     }
     public function remove($rowId){
         Cart::remove($rowId);
@@ -71,10 +72,10 @@ class cartController extends Controller
                     Session::put('coupon', $coup);
                 } 
                 Session::save();
-                return redirect()->back()->with('message', 'Add code discount successfully');
+                return redirect()->back()->with('message', 'Add discount code successfully');
             }
         }else{
-            return redirect()->back()->with('error', 'Add wrong code discount, Please try again! ');
+            return redirect()->back()->with('error', 'Add wrong discount code, Please try again! ');
         }
         
         // return back()->with('message', 'update Item Success!');

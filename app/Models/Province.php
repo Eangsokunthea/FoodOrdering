@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Province extends Model
 {
     use HasFactory;
+    public $timestamps = false; //set time to false
     protected $fillable = [
         'maqh',
         'name_quanhuyen',

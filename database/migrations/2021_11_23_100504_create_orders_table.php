@@ -14,11 +14,14 @@ class CreateOrdersTable extends Migration
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->bigIncrements('order_id');
-            $table->integer('customer_id');
-            $table->integer('shipping_id');
+            $table->bigIncrements('order_id')->unsigned()->autoIncrement();
+            $table->unsignedBigInteger('customer_id');
+            $table->unsignedBigInteger('shipping_id');
             $table->float('order_total', 10, 2);
+            $table->string('order_date');
             $table->string('order_status')->default('pending');
+            $table->foreign('customer_id')->references('customer_id')->on('customers')->onDelete('cascade');
+            $table->foreign('shipping_id')->references('id')->on('shippings')->onDelete('cascade');
             $table->timestamps();
         });
     }

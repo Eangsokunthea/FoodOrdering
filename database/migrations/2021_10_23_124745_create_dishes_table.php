@@ -14,8 +14,8 @@ class CreateDishesTable extends Migration
     public function up()
     {
         Schema::create('dishes', function (Blueprint $table) {
-            $table->bigIncrements('dish_id');
-            $table->foreignId('category_id');
+            $table->bigIncrements('dish_id')->unsigned()->autoIncrement();
+            $table->unsignedBigInteger('category_id');
             $table->string('dish_name');
             $table->longText('dish_detail');
             $table->text('dish_image');
@@ -23,6 +23,7 @@ class CreateDishesTable extends Migration
             $table->dateTime('added_on');
             $table->float('full_price', 10, 2)->nullable();
             $table->float('half_price', 10, 2)->nullable();
+            $table->foreign('category_id')->references('category_id')->on('categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

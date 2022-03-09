@@ -112,30 +112,40 @@
                                     <tbody>
                                         <tr>
                                             <td class="left">
-                                                <strong class="text-dark">Total</strong>
+                                                <strong class="text-dark">Sub Total</strong>
                                             </td>
                                             <td class="right">{{$sum}}.00$</td>
                                         </tr>
 
-                                        <!-- <tr>
-                                            <td class="left">
-                                                <strong class="text-dark">Discount (20%)</strong>
-                                            </td>
-                                            <td class="right">$5,761,00</td>
-                                        </tr>
                                         <tr>
                                             <td class="left">
-                                                <strong class="text-dark">VAT (10%)</strong>
+                                                <strong class="text-dark">Discount</strong>
                                             </td>
-                                            <td class="right">$2,304,00</td>
-                                        </tr>
-                                        <tr>
-                                            <td class="left">
-                                                <strong class="text-dark">Total</strong> </td>
                                             <td class="right">
-                                                <strong class="text-dark">$20,744,00</strong>
+                                                @if(Session::get('coupon'))
+                                                    @foreach(Session::get('coupon') as $coup)
+                                                        @if($coup['coupon_type']==1)
+                                                            {{$coup['coupon_value']}}%
+                                                        @elseif($coup['coupon_type']==0)
+                                                            {{number_format($coup['coupon_value'],0,',','.')}}$
+                                                        @endif
+                                                    @endforeach
+                                                @endif
                                             </td>
-                                        </tr> -->
+                                        </tr>
+                                        <tr>
+                                            <td class="left">
+                                                <strong class="text-dark">FeeShip</strong>
+                                            </td>
+                                            <td class="right">{{Session::get('fee')}}.00$</td>
+                                        </tr>
+                                        <tr>
+                                            <td class="left">
+                                                <strong class="text-dark">Total Remaining</strong> </td>
+                                            <td class="right">
+                                                <strong class="text-dark">{{$order->order_total}}.00$</strong>
+                                            </td>
+                                        </tr>
 
                                     </tbody>
                                 </table>

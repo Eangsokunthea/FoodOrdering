@@ -17,12 +17,28 @@
                                 <div class="card-header text-truncate" style="font-size: 28px;">Your order has been placed</div>
                                 <div class="card-body">
                                     <strong class="text-bold" style="font-size:20px;">
-                                        Your payable amount is 
-                                        @if(Session::get('sum') == null) and payable amount is {{Session::get('')}} $.
-                                            00 $.
+                                        Your payable amount is
+                                        @if(Session::get('sum') == null) 
+                                            0.00$ and payable amount is {{Session::get('')}} 0.00$
                                         @else
-                                            {{Session::get('sum')}} $.
-                                        @endif
+                                            <?php
+                                                if(Session::get('fee') && !Session::get('coupon')){
+                                                    $total_after = Session::get('total_after_fee');
+                                                    echo number_format($total_after,0,',','.').'.00$';
+                                                }elseif(!Session::get('fee') && Session::get('coupon')){
+                                                    $total_after = Session::get('total_after_coupon');
+                                                    echo number_format($total_after,0,',','.').'.00$';
+                                                }elseif(Session::get('fee') && Session::get('coupon')){
+                                                    $total_after = Session::get('total_after_coupon');
+                                                    $total_after = $total_after + Session::get('fee');
+                                                    echo number_format($total_after,0,',','.').'.00$';
+                                                }elseif(!Session::get('fee') && !Session::get('coupon')){
+                                                    $total_after = Session::get('sum');
+                                                    echo number_format($total_after,0,',','.').'.00$';
+                                                }
+                                            ?>
+                                        @endif   
+                                        
                                     </strong>
                                     <br>
                                     <strong style="font-size:20px;">Please make payment by entering your Credit or Debit cart.</strong>

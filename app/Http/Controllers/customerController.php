@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\City;
 use App\Models\Customer;
+use App\Models\Delivery;
+use App\Models\Feeship;
+use App\Models\Province;
 use App\Models\Shipping;
+use App\Models\Wards;
 use Mail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
-// use Session;
+use Cart;
 
 class customerController extends Controller
 {
@@ -23,6 +28,7 @@ class customerController extends Controller
         $customer->phone_no = $request->phone_no; 
         $customer->password = bcrypt($request->password); 
         $customer->save();
+
 
         $customer_id = $customer->customer_id;
         Session::put('customer_id', $customer_id);
@@ -64,10 +70,12 @@ class customerController extends Controller
     }
 
     public function shipping(){
+        $CartDish = Cart::content();
         $categories = Category::where('category_status', 1)->get();
+        $city = City::orderby('matp','ASC')->get();
         $customer = Customer::find(Session::get('customer_id'));
         
-        return view('FrontEnd.checkout.shipping', compact('customer', 'categories'));
+        return view('FrontEnd.checkout.shipping', compact('customer', 'categories', 'CartDish', 'city'));
     }
     
     public function storeShipping(Request $request){
@@ -84,4 +92,54 @@ class customerController extends Controller
 
     }
 
+    public function SelectDeliverHome(Request $request){
+        $data = $request->all();
+    	if($data['action']){
+    		$output = '';
+    		if($data['action']=="city"){
+    			$select_province = Province::where('matp',$data['ma_id'])->orderby('maqh','ASC')->get();
+    				$output.='<option>---Chọn quận huyện---</option>';
+    			foreach($select_province as $key => $province){
+    				$output.='<option value="'.$province->maqh.'">'.$province->name_quanhuyen.'</option>';
+    			}
+
+    		}else{
+
+    			$select_wards = Wards::where('maqh',$data['ma_id'])->orderby('xaid','ASC')->get();
+    			$output.='<option>---Chọn xã phường---</option>';
+    			foreach($select_wards as $key => $ward){
+    				$output.='<option value="'.$ward->xaid.'">'.$ward->name_xaphuong.'</option>';
+    			}
+    		}
+    		echo $output;
+    	}
+
+    }
+
+    public function CalculateFee(Request $request){
+        $data = $request->all();
+        if($data['matp']){
+            $feeship = Feeship::where('fee_matp',$data['matp'])->where('fee_maqh',$data['maqh'])->where('fee_xaid',$data['xaid'])->get();
+            if($feeship){
+                $count_feeship = $feeship->count();
+                if($count_feeship>0){
+                    foreach($feeship as $key => $fee){
+                    Session::put('fee',$fee->fee_feeship);
+                    Session::save();
+                }
+                }else{ 
+                    Session::put('fee',1);
+                    Session::save();
+                }
+            }
+
+        }
+    }
+
+    public function DelFee(){
+        Session::forget('fee');
+        return redirect()->back();
+    }
+
+    
 }

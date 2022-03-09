@@ -1,5 +1,8 @@
 <div class="banner">
 		<!-- header -->
+		<?php
+            $content = Cart::content();
+        ?>
 		<div class="header">
 			<div class="w3ls-header"><!-- header-one --> 
 				<div class="container">
@@ -9,7 +12,7 @@
 					<div class="w3ls-header-right">
 						<ul> 
 							<li class="head-dpdn">
-								<i class="fa fa-phone" aria-hidden="true"></i> Call us: +01 222 33345 
+								<i class="fa fa-phone" aria-hidden="true"></i> Call us: +08 122 50896 
 							</li> 
 							@if(Session::get('customer_id'))
 							<li class="head-dpdn">
@@ -64,17 +67,26 @@
 						</div> 
 						<div class="collapse navbar-collapse" id="bs-megadropdown-tabs">
 							<ul class="nav navbar-nav navbar-right">
-								@foreach($categories as $cate)
-								<li><a href="{{route('show_category_dish', ['category_id'=>$cate->category_id])}}">{{$cate->category_name}}</a></li>	
-								@endforeach
-								<li><a href="about.html">About</a></li> 
-								<li><a href="contact.html">Contact Us</a></li>
+								<li><a href="{{route('show_all_dish')}}">Home</a></li>
+								<li class="w3pages"><a href="{{route('show_all_dish')}}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Type Dish<span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										@foreach($categories as $cate)
+										<li>
+											<a href="{{route('show_category_dish', ['category_id'=>$cate->category_id])}}">
+												{{$cate->category_name}}
+											</a>
+										</li>	
+										@endforeach    
+									</ul>
+								</li> 
+								<li><a href="{{route('about')}}">About</a></li> 
+								<li><a href="{{route('contact')}}">Contact Us</a></li>
 							</ul>
 						</div>
 						<div class="cart cart box_1"> 
 							<a href="{{route('show_cart')}}" class="last"> 
-								<button class="w3view-cart" type="submit" name="submit" value=""><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-							</a>   
+								<button class="w3view-cart" type="submit" name="submit" value="" ><i class="fa fa-cart-arrow-down" aria-hidden="true"></i><sup style="color: #ffff; font-size: 15px;">{{Cart::count()}}</sup></button>
+							</a>  
 						</div> 
 					</nav>
 				</div>

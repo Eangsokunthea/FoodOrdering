@@ -18,7 +18,7 @@
           <img src="{{asset('/BackEnd')}}/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="{{asset('/home')}}" class="d-block">{{ Auth::user()->name }}</a>
         </div>
       </div>
 
@@ -27,9 +27,26 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+          <li class="nav-item has-treeview {{($prefix=='/user')?'menu-open':''}}">
+            <a href="#" class="nav-link">
+            <i class="nav-icon fas fa-users"></i>
+              <p>
+                User
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('manage_user')}}" class="nav-link {{($route=='manage_user')?'active':''}}">
+                  <i class="far fa-edit nav-icon"></i>
+                  <p>Manage User</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item has-treeview {{($prefix=='/category')?'menu-open':''}}">
             <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <i class="nav-icon fas fa-bars"></i>
               <p>
                 Category
                 <i class="right fas fa-angle-left"></i>
@@ -46,54 +63,6 @@
                 <a href="{{route('manage_category')}}" class="nav-link {{($route=='manage_category')?'active':''}}">
                   <i class="far fa-edit nav-icon"></i>
                   <p>Manage Category</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview {{($prefix=='/delivery')?'menu-open':''}}">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-truck"></i>
-              <p>
-                Delivery
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('show_delivery')}}" class="nav-link {{($route=='show_delivery')?'active':''}}">
-                  <i class="fa fa-plus-circle nav-icon"></i>
-                  <p>Add Delivery</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('manage_delivery')}}" class="nav-link {{($route=='manage_delivery')?'active':''}}">
-                  <i class="far fa-edit nav-icon"></i>
-                  <p>Manage Delivery</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-
-          <li class="nav-item has-treeview {{($prefix=='/coupon')?'menu-open':''}}">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-money-bill-wave"></i>
-              <p>
-                Coupon
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="{{route('show_coupon')}}" class="nav-link {{($route=='show_coupon')?'active':''}}">
-                  <i class="fa fa-plus-circle nav-icon"></i>
-                  <p>Add Coupon</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="{{route('manage_coupon')}}" class="nav-link {{($route=='manage_coupon')?'active':''}}">
-                  <i class="far fa-edit nav-icon"></i>
-                  <p>Manage Coupon</p>
                 </a>
               </li>
             </ul>
@@ -118,6 +87,72 @@
                 <a href= "{{route('manage_dish')}}" class="nav-link {{($route=='manage_dish')?'active':''}}">
                   <i class="fa fa-edit nav-icon"></i>
                   <p>Manage Dish</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview {{($prefix=='/delivery')?'menu-open':''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-user-clock"></i>
+              <p>
+                Delivery
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('show_delivery')}}" class="nav-link {{($route=='show_delivery')?'active':''}}">
+                  <i class="fa fa-plus-circle nav-icon"></i>
+                  <p>Add Delivery</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('manage_delivery')}}" class="nav-link {{($route=='manage_delivery')?'active':''}}">
+                  <i class="far fa-edit nav-icon"></i>
+                  <p>Manage Delivery</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview {{($prefix=='/delivery')?'menu-open':''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-truck"></i>
+              <p>
+                FeeShip Delivery
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('manage_feeship')}}" class="nav-link {{($route=='manage_feeship')?'active':''}}">
+                  <i class="far fa-edit nav-icon"></i>
+                  <p> Manage FeeShip Delivery</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+
+          <li class="nav-item has-treeview {{($prefix=='/coupon')?'menu-open':''}}">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-money-bill-wave"></i>
+              <p>
+                Coupon
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('show_coupon')}}" class="nav-link {{($route=='show_coupon')?'active':''}}">
+                  <i class="fa fa-plus-circle nav-icon"></i>
+                  <p>Add Coupon</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('manage_coupon')}}" class="nav-link {{($route=='manage_coupon')?'active':''}}">
+                  <i class="far fa-edit nav-icon"></i>
+                  <p>Manage Coupon</p>
                 </a>
               </li>
             </ul>
